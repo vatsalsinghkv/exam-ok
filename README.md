@@ -6,7 +6,7 @@
 
 - [x] Project Setup (Next)
 - [x] ShadCN Setup
-- [ ] Clerk Setup | NextAuth | BetterAuth
+- [x] Clerk Setup | NextAuth | BetterAuth
 - [ ] Organization Setup (optional)
 - [ ] DB setup - Prisma
 - [ ] e3-env, commitlint, lint-staged | dev-tools
