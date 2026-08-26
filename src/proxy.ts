@@ -13,8 +13,8 @@ export async function proxy(request: NextRequest) {
   const { nextUrl } = request;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(API_AUTH_PREFIX);
-  const isPublicRoute = PUBLIC_ROUTES.includes(nextUrl.pathname);
-  const isAuthRoute = AUTH_ROUTES.includes(nextUrl.pathname);
+  const isPublicRoute = PUBLIC_ROUTES.some((r) => r === nextUrl.pathname);
+  const isAuthRoute = AUTH_ROUTES.some((r) => r === nextUrl.pathname);
 
   if (isPublicRoute || isApiAuthRoute) {
     return NextResponse.next(); // Don't do anything | like redirect
