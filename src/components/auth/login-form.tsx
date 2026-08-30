@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { signIn } from "@/lib/auth/client";
 import { ROUTES } from "@/lib/constants/routes";
 import { LoginSchema, type LoginValuesType } from "@/lib/schemas";
-import { cn, logger } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { PasswordInput } from "./password-input";
 import { SubmitButton } from "./submit-button";
 

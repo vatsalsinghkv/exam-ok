@@ -4,6 +4,7 @@ import { useState } from "react";
 import { register } from "@/actions/auth/register";
 
 import { PasswordInput } from "@/components/auth/password-input";
+import { SubmitButton } from "@/components/auth/submit-button";
 import { FormError, FormSuccess, UnstyledLink } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,8 +25,6 @@ import { Input } from "@/components/ui/input";
 
 import { ROUTES } from "@/lib/constants/routes";
 import { RegisterSchema, type RegisterValuesType } from "@/lib/schemas";
-import { logger } from "@/lib/utils";
-import { SubmitButton } from "./submit-button";
 
 const defaultValues: RegisterValuesType = {
   name: "",
@@ -43,7 +42,6 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
     validators: { onSubmit: RegisterSchema },
     async onSubmit({ value }) {
       const res = await register(value);
-      logger(res);
 
       if (res.status === "failed") {
         setError(res.error);
