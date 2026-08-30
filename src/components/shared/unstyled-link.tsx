@@ -10,40 +10,39 @@ export type UnstyledLinkProps = {
   nextLinkProps?: Omit<LinkProps, "href">;
 } & React.ComponentPropsWithRef<"a">;
 
-const UnstyledLink = React.forwardRef<HTMLAnchorElement, UnstyledLinkProps>(
-  ({ children, href, openNewTab, className, nextLinkProps, ...rest }, ref) => {
-    const isNewTab =
-      openNewTab !== undefined
-        ? openNewTab
-        : href && !href.startsWith("/") && !href.startsWith("#");
+export const UnstyledLink = React.forwardRef<
+  HTMLAnchorElement,
+  UnstyledLinkProps
+>(({ children, href, openNewTab, className, nextLinkProps, ...rest }, ref) => {
+  const isNewTab =
+    openNewTab !== undefined
+      ? openNewTab
+      : href && !href.startsWith("/") && !href.startsWith("#");
 
-    if (!isNewTab) {
-      return (
-        <Link
-          href={href}
-          ref={ref}
-          className={className}
-          {...rest}
-          {...nextLinkProps}
-        >
-          {children}
-        </Link>
-      );
-    }
-
+  if (!isNewTab) {
     return (
-      <a
-        ref={ref}
-        target="_blank"
-        rel="noopener noreferrer"
+      <Link
         href={href}
+        ref={ref}
+        className={className}
         {...rest}
-        className={cn(className)}
+        {...nextLinkProps}
       >
         {children}
-      </a>
+      </Link>
     );
-  },
-);
+  }
 
-export default UnstyledLink;
+  return (
+    <a
+      ref={ref}
+      target="_blank"
+      rel="noopener noreferrer"
+      href={href}
+      {...rest}
+      className={cn(className)}
+    >
+      {children}
+    </a>
+  );
+});

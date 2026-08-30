@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/suspicious/noArrayIndexKey: <explanation> */
+/** biome-ignore-all lint/suspicious/noArrayIndexKey: <ShadCN UI component> */
 "use client";
 
 import { cva, type VariantProps } from "class-variance-authority";
@@ -174,13 +174,28 @@ function FieldSeparator({
   );
 }
 
+function normalizeFieldError(error: unknown) {
+  if (typeof error === "string") {
+    return { message: error };
+  }
+
+  if (error && typeof error === "object") {
+    const maybeMessage = (error as { message?: unknown }).message;
+    if (typeof maybeMessage === "string") {
+      return { message: maybeMessage };
+    }
+  }
+
+  return undefined;
+}
+
 function FieldError({
   className,
   children,
   errors,
   ...props
 }: React.ComponentProps<"div"> & {
-  errors?: Array<{ message?: string } | undefined>;
+  errors?: ReadonlyArray<unknown>;
 }) {
   const content = useMemo(() => {
     if (children) {
@@ -191,8 +206,14 @@ function FieldError({
       return null;
     }
 
+    const normalizedErrors = errors
+      .map(normalizeFieldError)
+      .filter((error): error is { message: string } => !!error?.message);
+
     const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values(),
+      ...new Map(
+        normalizedErrors.map((error) => [error.message, error]),
+      ).values(),
     ];
 
     // biome-ignore lint/suspicious/noDoubleEquals: <using external shadCN UI>

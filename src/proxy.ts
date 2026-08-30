@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getUserServer } from "@/lib/auth";
+import { getUserServer } from "@/lib/auth/server";
 import {
   API_AUTH_PREFIX,
   AUTH_ROUTES,

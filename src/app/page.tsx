@@ -1,12 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useSession } from "@/lib/auth/client";
 
 export default function Home() {
   const router = useRouter();
-
+  const { data, isPending } = useSession();
+  const user = data?.user;
+  console.dir(data);
+  console.dir({ isPending });
   return (
     <main className="flex items-center justify-center h-screen bg-neutral-950 text-white">
+      <h1>User: {user?.name}</h1>
       <div className="flex gap-4">
         <button
           type="button"
