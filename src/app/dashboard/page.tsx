@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { signOut, useSession } from "@/lib/auth-client";
+import { signOut, useSession } from "@/lib/auth/client";
 
 export default function DashboardPage() {
   const router = useRouter();
