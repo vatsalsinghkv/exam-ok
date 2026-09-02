@@ -6,7 +6,7 @@ import { register } from "@/actions/auth/register";
 import { PasswordInput } from "@/components/auth/password-input";
 import { SubmitButton } from "@/components/auth/submit-button";
 import { FormError, FormSuccess, UnstyledLink } from "@/components/shared";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 
 import { ROUTES } from "@/lib/constants/routes";
 import { RegisterSchema, type RegisterValuesType } from "@/lib/schemas";
+import { Social } from "./social";
 
 const defaultValues: RegisterValuesType = {
   name: "",
@@ -205,9 +206,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
                     />
                   )}
                 />
-                <Button variant="outline" type="button">
-                  Sign up with Google
-                </Button>
+                <Social type="signup" />
 
                 <FieldDescription className="px-6 text-center">
                   Already have an account?{" "}

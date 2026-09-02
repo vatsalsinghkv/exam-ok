@@ -7,24 +7,20 @@ import { prisma } from "@/lib/prisma";
 const resend = new Resend(env.RESEND_API_KEY);
 
 export const auth = betterAuth({
+  baseURL: env.BETTER_AUTH_URL,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  socialProviders: {
+    google: {
+      clientId: env.GOOGLE_CLIENT_ID as string,
+      clientSecret: env.GOOGLE_CLIENT_SECRET as string,
+    },
+  },
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-    async sendResetPassword({ user, url }) {
-      resend.emails.send({
-        from: "onboarding@resend.dev",
-        to: user.email,
-        subject: "Reset your password",
-        html: `<p><a href=${url} target="_blank">Click here.</a> to reset your email</p>`,
-      });
-    },
-    async onPasswordReset({ user }) {
-      // your logic here
-      console.log(`Password for user ${user.email} has been reset.`);
-    },
+    // TODO: Add password reset functionality
   },
   emailVerification: {
     sendOnSignUp: false,

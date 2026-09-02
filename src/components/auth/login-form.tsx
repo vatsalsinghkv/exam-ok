@@ -6,7 +6,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { FormError, UnstyledLink } from "@/components/shared";
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -27,6 +27,7 @@ import { ROUTES } from "@/lib/constants/routes";
 import { LoginSchema, type LoginValuesType } from "@/lib/schemas";
 import { cn } from "@/lib/utils";
 import { PasswordInput } from "./password-input";
+import { Social } from "./social";
 import { SubmitButton } from "./submit-button";
 
 const defaultValues: LoginValuesType = {
@@ -160,14 +161,13 @@ export function LoginForm({
                     />
                   )}
                 />
-                <Button variant="outline" type="button">
-                  Login with Google
-                </Button>
+
+                <Social type="login" />
 
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
                   <UnstyledLink href={ROUTES.auth.register}>
-                    Register
+                    Create an account
                   </UnstyledLink>
                 </FieldDescription>
               </Field>
