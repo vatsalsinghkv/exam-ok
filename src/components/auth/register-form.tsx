@@ -210,7 +210,7 @@ export function RegisterForm({ ...props }: React.ComponentProps<typeof Card>) {
 
                 <FieldDescription className="px-6 text-center">
                   Already have an account?{" "}
-                  <UnstyledLink href={ROUTES.auth.login}>Log in</UnstyledLink>
+                  <UnstyledLink href={ROUTES.auth.signin}>Sign in</UnstyledLink>
                 </FieldDescription>
               </Field>
             </FieldGroup>

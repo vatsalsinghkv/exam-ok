@@ -166,9 +166,7 @@ export function LoginForm({
 
                 <FieldDescription className="text-center">
                   Don&apos;t have an account?{" "}
-                  <UnstyledLink href={ROUTES.auth.register}>
-                    Create an account
-                  </UnstyledLink>
+                  <UnstyledLink href={ROUTES.auth.signup}>Sign up</UnstyledLink>
                 </FieldDescription>
               </Field>
             </FieldGroup>

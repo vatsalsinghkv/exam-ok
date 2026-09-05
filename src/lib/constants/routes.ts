@@ -2,8 +2,8 @@ export const ROUTES = {
   home: "/",
   dashboard: "/dashboard",
   auth: {
-    login: "/auth/login",
-    register: "/auth/register",
+    signin: "/auth/sign-in",
+    signup: "/auth/sign-up",
     error: "/auth/error",
     reset: "/auth/reset",
     newPassword: "/auth/new-password",
@@ -20,14 +20,14 @@ export const PUBLIC_ROUTES = [
 ] as const;
 
 export const AUTH_ROUTES = [
-  ROUTES.auth.login,
-  ROUTES.auth.register,
+  ROUTES.auth.signin,
+  ROUTES.auth.signup,
   ROUTES.auth.error,
   ROUTES.auth.reset,
   ROUTES.auth.newPassword,
 ] as const;
 
 export const DEFAULT_AUTHENTICATED_REDIRECT = ROUTES.dashboard;
-export const DEFAULT_UNAUTHENTICATED_REDIRECT = ROUTES.auth.login;
+export const DEFAULT_UNAUTHENTICATED_REDIRECT = ROUTES.auth.signin;
 
 export const API_AUTH_PREFIX = ROUTES.api.authPrefix;

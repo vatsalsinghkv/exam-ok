@@ -18,14 +18,14 @@ export default function Home() {
         <div className="flex gap-4">
           <UnstyledLink
             className={buttonVariants({ variant: "outline", size: "lg" })}
-            href={ROUTES.auth.register}
+            href={ROUTES.auth.signup}
           >
             Sign Up
           </UnstyledLink>
 
           <UnstyledLink
             className={buttonVariants({ variant: "default", size: "lg" })}
-            href={ROUTES.auth.login}
+            href={ROUTES.auth.signin}
           >
             Sign In
           </UnstyledLink>
