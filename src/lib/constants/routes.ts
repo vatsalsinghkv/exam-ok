@@ -1,6 +1,14 @@
 export const ROUTES = {
   home: "/",
-  dashboard: "/dashboard",
+
+  dashboard: {
+    home: "/dashboard",
+    create: "/dashboard/create",
+    library: "/dashboard/library",
+    analytics: "/dashboard/analytics",
+    settings: "/dashboard/settings",
+  },
+
   auth: {
     signin: "/auth/sign-in",
     signup: "/auth/sign-up",
@@ -9,6 +17,7 @@ export const ROUTES = {
     newPassword: "/auth/new-password",
     newVerification: "/auth/new-verification",
   },
+
   api: {
     authPrefix: "/api/auth",
   },
@@ -27,7 +36,7 @@ export const AUTH_ROUTES = [
   ROUTES.auth.newPassword,
 ] as const;
 
-export const DEFAULT_AUTHENTICATED_REDIRECT = ROUTES.dashboard;
+export const DEFAULT_AUTHENTICATED_REDIRECT = ROUTES.dashboard.home;
 export const DEFAULT_UNAUTHENTICATED_REDIRECT = ROUTES.auth.signin;
 
 export const API_AUTH_PREFIX = ROUTES.api.authPrefix;

@@ -53,7 +53,7 @@ export function LoginForm({
       const { data, error } = await signIn.email({
         email: value.email,
         password: value.password,
-        callbackURL: ROUTES.dashboard,
+        callbackURL: ROUTES.dashboard.home,
         rememberMe: true,
       });
 
@@ -64,7 +64,7 @@ export function LoginForm({
 
       toast.success("User logged in successfully!");
       router.refresh();
-      router.push(data?.url ?? ROUTES.dashboard);
+      router.push(data?.url ?? ROUTES.dashboard.home);
     },
   });
 
