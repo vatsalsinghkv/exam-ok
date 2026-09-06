@@ -18,7 +18,7 @@ export function Social({ type }: Props) {
   const clickHandler = async (provider: "google") => {
     setLoadingProvider(provider);
     try {
-      await signIn.social({ provider, callbackURL: ROUTES.dashboard });
+      await signIn.social({ provider, callbackURL: ROUTES.dashboard.home });
     } catch (err) {
       console.error(err);
       toast.error((err as Error).message || "Something went wrong");
