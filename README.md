@@ -14,7 +14,7 @@
 
 ### Level-2 | Dashboard - Layout, Sidebar, Home Page
 
-- [ ] Sidebar
+- [x] Sidebar
 - [ ] Dashboard Home Section
 - [ ] Header
 - [ ] Hero
