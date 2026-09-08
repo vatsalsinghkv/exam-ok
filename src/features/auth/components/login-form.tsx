@@ -22,9 +22,9 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signIn } from "@/lib/auth/client";
+import { LoginSchema, type LoginValuesType } from "@/features/auth/schemas";
 import { ROUTES } from "@/lib/constants/routes";
-import { LoginSchema, type LoginValuesType } from "@/lib/schemas";
+import { signIn } from "@/lib/services/auth/client";
 import { cn } from "@/lib/utils";
 import { PasswordInput } from "./password-input";
 import { Social } from "./social";

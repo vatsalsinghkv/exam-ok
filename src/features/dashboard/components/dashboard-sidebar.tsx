@@ -25,9 +25,8 @@ import {
   mainMenuItems,
   othersMenuItems,
 } from "@/features/dashboard/data/sidebar";
-
-import { useCurrentUser } from "@/lib/auth/client";
 import { ROUTES } from "@/lib/constants/routes";
+import { useCurrentUser } from "@/lib/services/auth/client";
 
 export function DashboardSidebar() {
   const pathname = usePathname();

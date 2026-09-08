@@ -1,6 +1,5 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { getUserServer } from "@/lib/auth/server";
 import {
   API_AUTH_PREFIX,
   AUTH_ROUTES,
@@ -8,6 +7,7 @@ import {
   DEFAULT_UNAUTHENTICATED_REDIRECT,
   PUBLIC_ROUTES,
 } from "@/lib/constants/routes";
+import { getUserServer } from "@/lib/services/auth/server";
 
 export async function proxy(request: NextRequest) {
   const { nextUrl } = request;

@@ -2,7 +2,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { betterAuth } from "better-auth/minimal";
 import { Resend } from "resend";
 import { env } from "@/lib/env";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/services/prisma";
 
 const resend = new Resend(env.RESEND_API_KEY);
 

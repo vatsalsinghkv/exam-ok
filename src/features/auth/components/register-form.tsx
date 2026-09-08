@@ -1,12 +1,6 @@
 import { useForm } from "@tanstack/react-form-nextjs";
 import { useState } from "react";
-
-import { register } from "@/actions/auth/register";
-
-import { PasswordInput } from "@/components/auth/password-input";
-import { SubmitButton } from "@/components/auth/submit-button";
 import { FormError, FormSuccess, UnstyledLink } from "@/components/shared";
-
 import {
   Card,
   CardContent,
@@ -22,9 +16,14 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-
+import { register } from "@/features/auth/actions/register";
+import { PasswordInput } from "@/features/auth/components/password-input";
+import { SubmitButton } from "@/features/auth/components/submit-button";
+import {
+  RegisterSchema,
+  type RegisterValuesType,
+} from "@/features/auth/schemas";
 import { ROUTES } from "@/lib/constants/routes";
-import { RegisterSchema, type RegisterValuesType } from "@/lib/schemas";
 import { Social } from "./social";
 
 const defaultValues: RegisterValuesType = {

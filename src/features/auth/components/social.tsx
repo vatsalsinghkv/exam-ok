@@ -5,8 +5,8 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { signIn } from "@/lib/auth/client";
 import { ROUTES } from "@/lib/constants/routes";
+import { signIn } from "@/lib/services/auth/client";
 
 interface Props {
   type: "login" | "signup";

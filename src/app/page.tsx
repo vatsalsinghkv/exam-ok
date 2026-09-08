@@ -2,8 +2,8 @@
 
 import { UnstyledLink } from "@/components/shared";
 import { buttonVariants } from "@/components/ui/button";
-import { useSession } from "@/lib/auth/client";
 import { ROUTES } from "@/lib/constants/routes";
+import { useSession } from "@/lib/services/auth/client";
 
 export default function Home() {
   const { data, isPending } = useSession();
