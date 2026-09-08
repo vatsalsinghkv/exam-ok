@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/services/auth";
 
 export async function getUserServer(reqHeaders?: Headers) {
   const requestHeaders = reqHeaders || (await headers());

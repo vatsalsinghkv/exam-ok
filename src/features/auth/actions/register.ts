@@ -1,9 +1,12 @@
 "use server";
 
-import { signUpEmail } from "@/lib/auth/server";
+import {
+  RegisterSchema,
+  type RegisterValuesType,
+} from "@/features/auth/schemas";
+import type { AuthResponseType } from "@/features/auth/type";
 import { DEFAULT_AUTHENTICATED_REDIRECT } from "@/lib/constants/routes";
-import { RegisterSchema, type RegisterValuesType } from "@/lib/schemas";
-import type { AuthResponseType } from "@/lib/types/auth";
+import { signUpEmail } from "@/lib/services/auth/server";
 
 type RegisterUser = Awaited<ReturnType<typeof signUpEmail>>["user"];
 

@@ -26,8 +26,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { signOut } from "@/lib/auth/client";
 import { ROUTES } from "@/lib/constants/routes";
+import { signOut } from "@/lib/services/auth/client";
 
 type NavUserProps = {
   user: {

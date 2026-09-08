@@ -1,10 +1,10 @@
 "use server";
 
 import { headers } from "next/headers";
-import { signInEmail } from "@/lib/auth/server";
+import { LoginSchema, type LoginValuesType } from "@/features/auth/schemas";
+import type { AuthResponseType } from "@/features/auth/type";
 import { DEFAULT_AUTHENTICATED_REDIRECT } from "@/lib/constants/routes";
-import { LoginSchema, type LoginValuesType } from "@/lib/schemas";
-import type { AuthResponseType } from "@/lib/types/auth";
+import { signInEmail } from "@/lib/services/auth/server";
 
 type LoginUser = Awaited<ReturnType<typeof signInEmail>>["user"];
 
