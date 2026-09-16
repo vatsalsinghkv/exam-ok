@@ -1,5 +1,5 @@
-"use client";
+import { TestCreatorView } from "@/features/test-creator/views/test-creator-view";
 
 export default function CreateTestPage() {
-  return <div className="">Create Test</div>;
+  return <TestCreatorView />;
 }
