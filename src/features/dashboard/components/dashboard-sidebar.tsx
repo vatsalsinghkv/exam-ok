@@ -48,7 +48,7 @@ export function DashboardSidebar() {
               render={<UnstyledLink href={ROUTES.dashboard.create} />}
             >
               <Plus />
-              <span>Create Test</span>
+              <span>New Test</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

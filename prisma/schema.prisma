@@ -127,8 +127,9 @@ model Question {
 }
 
 model Option {
-  id   String @id @default(cuid())
-  text String
+  id    String  @id @default(cuid())
+  text  String
+  image String?
 
   questionId String
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
