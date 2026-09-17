@@ -87,16 +87,21 @@ model Verification {
 // App Logic
 // ============================================================
 
-model Test {
-  id          String  @id @default(cuid())
-  name        String
-  description String?
+enum TestStatus {
+  DRAFT
+  PUBLISHED
+}
 
+model Test {
+  id               String     @id @default(cuid())
+  name             String
+  description      String?
   duration         Int?
-  marksPerQuestion Float    @default(2)
-  negativeMark     Float    @default(0)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  marksPerQuestion Float      @default(2)
+  negativeMark     Float      @default(0)
+  status           TestStatus @default(DRAFT)
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -112,17 +117,20 @@ model Question {
   id              String   @id @default(cuid())
   text            String
   image           String?
-  options         Option[]
+  order           Int
   correctOptionId String?  @unique
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  testId          String
 
-  testId        String
   test          Test     @relation(fields: [testId], references: [id], onDelete: Cascade)
   correctOption Option?  @relation("CorrectOption", fields: [correctOptionId], references: [id], onDelete: SetNull)
   answers       Answer[]
+  options       Option[]
 
+  @@unique([testId, order])
   @@index([testId])
+  @@index([correctOptionId])
   @@map("question")
 }
 
@@ -130,13 +138,14 @@ model Option {
   id    String  @id @default(cuid())
   text  String
   image String?
+  order Int
 
   questionId String
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-
+  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
   correctFor Question? @relation("CorrectOption")
   answers    Answer[]
 
+  @@unique([questionId, order])
   @@index([questionId])
   @@map("option")
 }

@@ -1,30 +1,29 @@
-"use client";
-
 import { useState, useTransition } from "react";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { logger } from "@/lib/utils";
+
 import { parsePdfAction } from "../../actions/parse-pdf";
+import type { ParsedTest } from "../../lib/types";
 import { FileUpload } from "../file-upload";
 
-export default function Upload() {
+type UploadProps = {
+  onParsed: (data: ParsedTest) => void;
+};
+
+export default function Upload({ onParsed }: UploadProps) {
   const [questionFile, setQuestionFile] = useState<File | null>(null);
   const [answerKeyFile, setAnswerKeyFile] = useState<File | null>(null);
   const [hasAnswerKey, setHasAnswerKey] = useState(false);
-  const [extractedQuestionText, setExtractedQuestionText] =
-    useState<string>("");
-  const [extractedAnswerKeyText, setExtractedAnswerKeyText] =
-    useState<string>("");
 
   const [isPending, startTransition] = useTransition();
 
   const handleAnswerKeyChange = (checked: boolean) => {
     setHasAnswerKey(checked);
-    if (!checked) {
-      setAnswerKeyFile(null);
-    }
+    if (!checked) setAnswerKeyFile(null);
   };
 
   const handleParse = () => {
@@ -39,20 +38,21 @@ export default function Upload() {
       }
 
       const result = await parsePdfAction(formData);
-
       logger({ result });
 
-      if (result.success) {
-        if (result.questionText) setExtractedQuestionText(result.questionText);
-        if (result.answerKeyText)
-          setExtractedAnswerKeyText(result.answerKeyText);
-        if (result.text && !hasAnswerKey) setExtractedQuestionText(result.text);
-      } else {
-        alert(result.error || "An error occurred during text extraction.");
+      if (!result.success) {
+        alert(result.error || "Failed to process the PDF.");
+        return;
       }
+
+      if (!result.data) {
+        alert("No parsed data was returned.");
+        return;
+      }
+
+      onParsed(result.data);
     });
   };
-
   return (
     <main className="flex flex-col gap-y-5">
       <header className="text-muted-foreground">
@@ -62,6 +62,7 @@ export default function Upload() {
       <div className="flex flex-col gap-y-4">
         {/* Question paper */}
         <FileUpload
+          title="Question"
           onFileChange={setQuestionFile}
           value={questionFile}
           disabled={isPending}
@@ -89,9 +90,10 @@ export default function Upload() {
           <Separator className="flex-1" />
         </div>
 
-        {/* Answer key upload */}
+        {/* Answer key */}
         {hasAnswerKey && (
           <FileUpload
+            title="Answer Key"
             onFileChange={setAnswerKeyFile}
             value={answerKeyFile}
             disabled={isPending}
@@ -99,10 +101,11 @@ export default function Upload() {
         )}
       </div>
 
-      <footer>
+      <footer className="flex justify-center">
         <Button
           type="button"
           onClick={handleParse}
+          size="lg"
           disabled={
             !questionFile || (hasAnswerKey && !answerKeyFile) || isPending
           }
@@ -110,9 +113,6 @@ export default function Upload() {
           {isPending ? "Processing..." : "Create Test"}
         </Button>
       </footer>
-      {extractedQuestionText && (
-        <p className="text-muted-foreground">{extractedQuestionText}</p>
-      )}
     </main>
   );
 }
