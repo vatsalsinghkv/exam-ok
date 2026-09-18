@@ -7,14 +7,14 @@ import { Separator } from "@/components/ui/separator";
 import { logger } from "@/lib/utils";
 
 import { parsePdfAction } from "../../actions/parse-pdf";
+import { FileUpload } from "../../components/file-upload";
 import type { ParsedTest } from "../../lib/types";
-import { FileUpload } from "../file-upload";
 
 type UploadProps = {
   onParsed: (data: ParsedTest) => void;
 };
 
-export default function Upload({ onParsed }: UploadProps) {
+export function Upload({ onParsed }: UploadProps) {
   const [questionFile, setQuestionFile] = useState<File | null>(null);
   const [answerKeyFile, setAnswerKeyFile] = useState<File | null>(null);
   const [hasAnswerKey, setHasAnswerKey] = useState(false);

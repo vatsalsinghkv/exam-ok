@@ -12,6 +12,7 @@ export type AnswerSource =
   | "answer-key"
   | "question-paper-and-key"
   | "conflict"
+  | "manual"
   | "none";
 
 export type ParsedQuestion = {

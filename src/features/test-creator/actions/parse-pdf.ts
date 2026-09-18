@@ -12,9 +12,7 @@ import type { AnswerKeyResult, ParsePdfResult } from "../lib/types/actions";
 
 async function extractPdfPages(file: File) {
   const buffer = new Uint8Array(await file.arrayBuffer());
-
   const parsed = await extractText(buffer);
-
   return Array.isArray(parsed.text) ? parsed.text : [parsed.text];
 }
 
