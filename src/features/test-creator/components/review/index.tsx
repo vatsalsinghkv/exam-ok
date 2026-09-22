@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useReviewState } from "../../lib/hooks";
 import type { ParsedTest } from "../../lib/types";
 import type { ReviewTestPayload, SaveTestResult } from "../../lib/types/review";
+
 import { ReviewDialogs } from "../review/review-dialogs";
 import { ReviewHeader } from "../review/review-header";
 import { ReviewNotices } from "../review/review-notices";
@@ -24,12 +26,14 @@ export function Review({ data, onBack, onSaveDraft, onPublish }: Props) {
     onPublish,
   });
 
+  const [showNotice, setShowNotice] = useState(true);
+
   return (
     <div className="flex h-full min-h-0 flex-col">
+      {/* Global Review Header */}
       <ReviewHeader
         name={review.settings.name}
         questionCount={review.questions.length}
-        unresolvedCount={review.unresolvedCount}
         isSaving={review.isSaving}
         onDiscard={review.handleBack}
         onSettings={() => review.setSettingsOpen(true)}
@@ -37,8 +41,15 @@ export function Review({ data, onBack, onSaveDraft, onPublish }: Props) {
         onPublish={review.requestPublish}
       />
 
-      <ReviewNotices answerKeyStatus={data.answerKey.status} />
+      {/* Parser / answer-key notices */}
+      {showNotice && (
+        <ReviewNotices
+          onClose={() => setShowNotice(false)}
+          answerKeyStatus={data.answerKey.status}
+        />
+      )}
 
+      {/* Main Review Workspace */}
       <ReviewWorkspace
         questions={review.questions}
         activeQuestion={review.activeQuestion}
@@ -52,8 +63,10 @@ export function Review({ data, onBack, onSaveDraft, onPublish }: Props) {
         onChangeQuestion={review.updateQuestion}
         onDeleteQuestion={review.setDeleteQuestion}
         onResolveQuestion={review.resolveQuestion}
+        unresolvedCount={review.unresolvedCount}
       />
 
+      {/* Settings */}
       <TestSettingsSheet
         open={review.settingsOpen}
         onOpenChange={review.setSettingsOpen}
@@ -62,6 +75,7 @@ export function Review({ data, onBack, onSaveDraft, onPublish }: Props) {
         onChange={review.updateSettings}
       />
 
+      {/* Dialogs */}
       <ReviewDialogs
         deleteQuestion={review.deleteQuestion}
         showLeaveDialog={review.showLeaveDialog}

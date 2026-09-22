@@ -19,14 +19,11 @@ export type ParsedQuestion = {
   sourceNumber: number;
   sourceQuestionId?: string;
   sourcePage: number;
-
   text: string;
   image?: string;
-
   options: ParsedOption[];
   correctOptionPosition: OptionPosition | null;
   answerSource: AnswerSource;
-
   dropped: boolean;
   needsVisualReview: boolean;
   visualReason?: string;

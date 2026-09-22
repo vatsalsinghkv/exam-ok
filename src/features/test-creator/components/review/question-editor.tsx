@@ -10,24 +10,25 @@ import {
   X,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Separator } from "@/components/ui/separator";
+
 import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
 import type { OptionPosition, ParsedQuestion } from "../../lib/types/parser";
 
 type Props = {
   question: ParsedQuestion;
   questionNumber: number;
-
   answerKeyProvided: boolean;
   isResolved: boolean;
 
@@ -48,6 +49,16 @@ export function QuestionEditor({
   const [isEditing, setIsEditing] = useState(false);
   const [originalQuestion, setOriginalQuestion] =
     useState<ParsedQuestion>(question);
+
+  /*
+   * When the selected question changes, update the edit snapshot.
+   * This prevents cancel from restoring the previously selected question.
+   */
+  useEffect(() => {
+    if (!isEditing) {
+      setOriginalQuestion(question);
+    }
+  }, [question, isEditing]);
 
   const hasIssues =
     question.dropped ||
@@ -75,10 +86,6 @@ export function QuestionEditor({
     onChange({
       ...question,
       text,
-      answerSource:
-        question.answerSource === "conflict"
-          ? question.answerSource
-          : question.answerSource,
     });
   };
 
@@ -86,7 +93,12 @@ export function QuestionEditor({
     onChange({
       ...question,
       options: question.options.map((option) =>
-        option.position === position ? { ...option, text } : option,
+        option.position === position
+          ? {
+              ...option,
+              text,
+            }
+          : option,
       ),
     });
   };
@@ -103,16 +115,14 @@ export function QuestionEditor({
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl pb-10">
+    <div className="mx-auto w-full max-w-5xl pb-10">
       {/* Question header */}
-      <div className="mb-6 flex items-start justify-between gap-4">
+      <header className="mb-5 flex items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <h2 className="text-lg font-semibold">Question {questionNumber}</h2>
 
-            {question.dropped && (
-              <Badge variant="destructive">Dropped by answer key</Badge>
-            )}
+            {question.dropped && <Badge variant="destructive">Dropped</Badge>}
 
             {question.needsVisualReview && (
               <Badge variant="secondary">
@@ -128,23 +138,27 @@ export function QuestionEditor({
               </Badge>
             )}
 
-            {question.answerSource === "manual" && (
-              <Badge variant="outline">
-                <Check className="mr-1 size-3.5" />
+            {isResolved && !question.dropped && (
+              <Badge
+                variant="outline"
+                className="border-emerald-500/40 text-emerald-600"
+              >
+                <Check className="mr-1 size-3" />
                 Manually reviewed
               </Badge>
             )}
           </div>
 
           <p className="mt-1 text-sm text-muted-foreground">
-            Source question {question.sourceNumber}
+            Source page {question.sourcePage}
             {" · "}
-            page {question.sourcePage}
+            Question {question.sourceNumber}
           </p>
         </div>
 
-        <div className="flex items-center gap-1">
-          {!isEditing && hasIssues && !question.dropped && (
+        {/* Single-question actions */}
+        <div className="flex shrink-0 items-center gap-1">
+          {!isEditing && hasIssues && !question.dropped && !isResolved && (
             <Button
               type="button"
               variant="outline"
@@ -152,7 +166,7 @@ export function QuestionEditor({
               onClick={onResolve}
             >
               <CheckCircle2 className="mr-2 size-4" />
-              Mark reviewed
+              <span className="hidden sm:inline">Mark reviewed</span>
             </Button>
           )}
 
@@ -166,10 +180,12 @@ export function QuestionEditor({
                     variant="ghost"
                     onClick={startEditing}
                   >
-                    <Pencil />
+                    <Pencil className="size-4" />
+                    <span className="sr-only">Edit question</span>
                   </Button>
                 }
               />
+
               <TooltipContent>Edit question</TooltipContent>
             </Tooltip>
           )}
@@ -182,7 +198,7 @@ export function QuestionEditor({
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="text-destructive hover:text-destructive"
+                    className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                     onClick={onDelete}
                   >
                     <Trash2 className="size-4" />
@@ -195,20 +211,20 @@ export function QuestionEditor({
             </Tooltip>
           )}
         </div>
-      </div>
+      </header>
 
       {/* Parser feedback */}
       {hasIssues && !isResolved && (
-        <div className="mb-6 rounded-lg border bg-muted/30 p-4">
+        <div className="mb-5 rounded-lg border border-amber-500/30 bg-amber-500/5 p-4">
           <div className="flex gap-3">
             <AlertCircle className="mt-0.5 size-4 shrink-0 text-amber-500" />
 
-            <div className="space-y-1">
+            <div className="min-w-0 space-y-1.5">
               <p className="text-sm font-medium">
                 This question needs your review
               </p>
 
-              <div className="text-sm text-muted-foreground">
+              <div className="space-y-1 text-sm text-muted-foreground">
                 {question.dropped && (
                   <p>
                     This question was marked as dropped by the supplied answer
@@ -216,13 +232,14 @@ export function QuestionEditor({
                   </p>
                 )}
 
-                {question.needsVisualReview && question.visualReason && (
+                {/* {question.needsVisualReview && question.visualReason && (
                   <p>{question.visualReason}</p>
-                )}
+                )} */}
 
-                {question.warnings.map((warning) => (
-                  <p key={warning}>{warning}</p>
-                ))}
+                {question.warnings.length > 0 &&
+                  question.warnings.map((warning) => (
+                    <p key={warning}>{warning}</p>
+                  ))}
 
                 {answerKeyProvided && question.answerSource === "conflict" && (
                   <p>
@@ -230,34 +247,41 @@ export function QuestionEditor({
                     answer.
                   </p>
                 )}
+
+                {answerKeyProvided &&
+                  question.answerSource === "none" &&
+                  !question.dropped && (
+                    <p>No correct answer could be mapped automatically.</p>
+                  )}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Question */}
-      <section className="rounded-xl border bg-background">
-        <div className="border-b p-5">
-          <Label className="text-sm font-medium">Question</Label>
-
+      {/* Question Card */}
+      <section className="overflow-hidden rounded-xl border bg-background">
+        {/* Question text */}
+        <div className="border-b p-5 sm:p-6">
           {isEditing ? (
             <Textarea
               value={question.text}
               onChange={(event) => updateText(event.target.value)}
-              className="mt-3 min-h-32 resize-y"
+              placeholder="Enter question text..."
+              className="min-h-32 resize-y"
             />
           ) : (
-            <p className="mt-3 whitespace-pre-wrap text-[15px] leading-7">
+            <p className="whitespace-pre-wrap text-[15px] leading-7">
               {question.text || "No question text extracted."}
             </p>
           )}
 
+          {/* Question image */}
           {question.image && (
             <div className="mt-5 overflow-hidden rounded-lg border bg-muted/20 p-2">
               <Image
-                width={400}
-                height={300}
+                width={800}
+                height={600}
                 src={question.image}
                 alt={`Question ${questionNumber} visual`}
                 className="mx-auto max-h-105 max-w-full object-contain"
@@ -267,17 +291,15 @@ export function QuestionEditor({
         </div>
 
         {/* Options */}
-        <div className="p-5">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <h3 className="font-medium">Answer options</h3>
+        <div className="p-5 sm:p-6">
+          <div className="mb-4">
+            {/* <h3 className="font-medium">Answer options</h3> */}
 
-              <p className="text-xs text-muted-foreground">
-                {isEditing
-                  ? "Select the correct answer or choose no correct answer."
-                  : "Detected options from the source document."}
-              </p>
-            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              {isEditing
+                ? "Select the correct answer or choose no correct answer."
+                : "Detected options from the source document."}
+            </p>
           </div>
 
           {isEditing ? (
@@ -294,11 +316,15 @@ export function QuestionEditor({
                 />
               ))}
 
+              {/* No correct answer */}
               <div className="flex items-center gap-3 rounded-lg border p-3">
-                <RadioGroupItem value="none" id="correct-none" />
+                <RadioGroupItem
+                  value="none"
+                  id={`correct-none-${question.sourceNumber}`}
+                />
 
                 <Label
-                  htmlFor="correct-none"
+                  htmlFor={`correct-none-${question.sourceNumber}`}
                   className="cursor-pointer font-normal"
                 >
                   No correct answer
@@ -312,51 +338,17 @@ export function QuestionEditor({
                   question.correctOptionPosition === option.position;
 
                 return (
-                  <div
+                  <OptionDisplay
                     key={option.position}
-                    className={`rounded-lg border p-4 ${
-                      isCorrect
-                        ? "border-emerald-500/40 bg-emerald-500/5"
-                        : "bg-muted/20"
-                    }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold">
-                        {String.fromCharCode(64 + option.position)}
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <p className="whitespace-pre-wrap leading-6">
-                          {option.text || "No option text extracted."}
-                        </p>
-
-                        {option.image && (
-                          <Image
-                            width={400}
-                            height={300}
-                            src={option.image}
-                            alt={`Option ${option.position}`}
-                            className="mt-3 max-h-48 max-w-full rounded-md border object-contain"
-                          />
-                        )}
-                      </div>
-
-                      {isCorrect && (
-                        <Badge
-                          variant="outline"
-                          className="shrink-0 border-emerald-500/40 text-emerald-600"
-                        >
-                          <Check className="mr-1 size-3" />
-                          Correct
-                        </Badge>
-                      )}
-                    </div>
-                  </div>
+                    option={option}
+                    isCorrect={isCorrect}
+                    questionNumber={questionNumber}
+                  />
                 );
               })}
 
               {question.correctOptionPosition === null && (
-                <p className="text-sm text-muted-foreground">
+                <p className="pt-1 text-sm text-muted-foreground">
                   No correct answer selected.
                 </p>
               )}
@@ -365,7 +357,7 @@ export function QuestionEditor({
         </div>
       </section>
 
-      {/* Edit actions */}
+      {/* Edit Actions */}
       {isEditing && (
         <div className="mt-4 flex items-center justify-end gap-2">
           <Button type="button" variant="ghost" onClick={cancelEditing}>
@@ -380,19 +372,20 @@ export function QuestionEditor({
         </div>
       )}
 
-      <Separator className="my-8" />
-
-      <div className="flex justify-between text-xs text-muted-foreground">
-        <span>Question source: page {question.sourcePage}</span>
+      {/* Footer metadata */}
+      <div className="mt-5 flex items-center justify-between border-t pt-4 text-xs text-muted-foreground">
+        <span>Source page {question.sourcePage}</span>
 
         <span>
-          {question.options.length} option
-          {question.options.length === 1 ? "" : "s"}
+          {question.options.length}{" "}
+          {question.options.length === 1 ? "option" : "options"}
         </span>
       </div>
     </div>
   );
 }
+
+/* Option - Edit mode */
 
 function OptionEditor({
   option,
@@ -419,17 +412,86 @@ function OptionEditor({
         <Textarea
           value={option.text}
           onChange={(event) => onChange(event.target.value)}
+          placeholder={`Option ${String.fromCharCode(64 + option.position)}`}
           className="mt-2 min-h-20 resize-y"
         />
 
         {option.image && (
-          <Image
-            width={300}
-            height={200}
-            src={option.image}
-            alt={`Option ${option.position}`}
-            className="mt-3 max-h-48 max-w-full rounded-md border object-contain"
-          />
+          <div className="mt-3 overflow-hidden rounded-md border bg-muted/20 p-2">
+            <Image
+              width={500}
+              height={300}
+              src={option.image}
+              alt={`Option ${String.fromCharCode(64 + option.position)}`}
+              className="max-h-48 max-w-full object-contain"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/*  Option - View mode */
+
+function OptionDisplay({
+  option,
+  isCorrect,
+}: {
+  option: ParsedQuestion["options"][number];
+  isCorrect: boolean;
+  questionNumber: number;
+}) {
+  const letter = String.fromCharCode(64 + option.position);
+
+  return (
+    <div
+      className={[
+        "rounded-lg border p-4 transition-colors",
+        isCorrect ? "border-emerald-500/40 bg-emerald-500/5" : "bg-muted/20",
+      ].join(" ")}
+    >
+      <div className="flex items-start gap-3">
+        {/* Option letter */}
+        <div
+          className={[
+            "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+            isCorrect
+              ? "bg-emerald-500/10 text-emerald-600"
+              : "bg-muted text-muted-foreground",
+          ].join(" ")}
+        >
+          {letter}
+        </div>
+
+        {/* Option content */}
+        <div className="min-w-0 flex-1">
+          <p className="whitespace-pre-wrap text-sm leading-6">
+            {option.text || "No option text extracted."}
+          </p>
+
+          {option.image && (
+            <div className="mt-3 overflow-hidden rounded-md border bg-muted/20 p-2">
+              <Image
+                width={500}
+                height={300}
+                src={option.image}
+                alt={`Option ${letter}`}
+                className="max-h-48 max-w-full object-contain"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Correct badge */}
+        {isCorrect && (
+          <Badge
+            variant="outline"
+            className="shrink-0 border-emerald-500/40 text-emerald-600"
+          >
+            <Check className="mr-1 size-3" />
+            Correct
+          </Badge>
         )}
       </div>
     </div>

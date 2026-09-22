@@ -63,11 +63,8 @@ export function ReviewDialogs({
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={onConfirmDelete}
-            >
-              Delete question
+            <AlertDialogAction variant="destructive" onClick={onConfirmDelete}>
+              Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -88,10 +85,7 @@ export function ReviewDialogs({
           <AlertDialogFooter>
             <AlertDialogCancel>Continue editing</AlertDialogCancel>
 
-            <AlertDialogAction
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-              onClick={onConfirmLeave}
-            >
+            <AlertDialogAction variant="destructive" onClick={onConfirmLeave}>
               Leave and discard
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -129,7 +123,6 @@ export function ReviewDialogs({
 
           <AlertDialogFooter>
             <AlertDialogCancel>Continue reviewing</AlertDialogCancel>
-
             <AlertDialogAction onClick={onConfirmPublish} disabled={isSaving}>
               Publish test
             </AlertDialogAction>

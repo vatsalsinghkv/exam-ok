@@ -8,24 +8,21 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+
 import type { ParsedQuestion } from "../../lib/types/parser";
 import { QuestionEditor } from "./question-editor";
 import { QuestionSidebar } from "./question-sidebar";
 
 type Props = {
   questions: ParsedQuestion[];
-
   activeQuestion: number;
   currentQuestion: ParsedQuestion | undefined;
   currentQuestionIndex: number;
-
   answerKeyStatus: "not-provided" | "mapped" | "partial" | "unmapped";
-
   resolvedQuestions: Set<number>;
-
   questionSheetOpen: boolean;
+  unresolvedCount: number;
   onQuestionSheetOpenChange: (open: boolean) => void;
-
   onSelectQuestion: (sourceNumber: number) => void;
   onChangeQuestion: (question: ParsedQuestion) => void;
   onDeleteQuestion: (question: ParsedQuestion) => void;
@@ -40,6 +37,7 @@ export function ReviewWorkspace({
   answerKeyStatus,
   resolvedQuestions,
   questionSheetOpen,
+  unresolvedCount,
   onQuestionSheetOpenChange,
   onSelectQuestion,
   onChangeQuestion,
@@ -51,7 +49,7 @@ export function ReviewWorkspace({
 
   return (
     <div className="flex min-h-0 flex-1 overflow-hidden border-t">
-      {/* Desktop navigator */}
+      {/* Desktop question navigator */}
       <aside className="hidden w-72 shrink-0 border-r md:block">
         <QuestionSidebar
           questions={questions}
@@ -59,13 +57,14 @@ export function ReviewWorkspace({
           answerKeyStatus={answerKeyStatus}
           resolvedQuestions={resolvedQuestions}
           onSelect={onSelectQuestion}
+          unresolvedCount={unresolvedCount}
         />
       </aside>
 
-      {/* Editor */}
+      {/* Main editor */}
       <main className="min-w-0 flex-1">
-        {/* Mobile navigator */}
-        <div className="flex border-b p-3 md:hidden">
+        {/* Mobile question selector */}
+        <div className="border-b p-3 md:hidden">
           <Button
             type="button"
             variant="outline"
@@ -105,7 +104,7 @@ export function ReviewWorkspace({
         </ScrollArea>
       </main>
 
-      {/* Mobile navigator sheet */}
+      {/* Mobile question navigator */}
       <Sheet open={questionSheetOpen} onOpenChange={onQuestionSheetOpenChange}>
         <SheetContent side="left" className="w-[85%] p-0 sm:max-w-sm">
           <SheetHeader className="border-b px-4 py-3">
@@ -113,6 +112,7 @@ export function ReviewWorkspace({
           </SheetHeader>
 
           <QuestionSidebar
+            unresolvedCount={unresolvedCount}
             questions={questions}
             activeQuestion={activeQuestion}
             answerKeyStatus={answerKeyStatus}

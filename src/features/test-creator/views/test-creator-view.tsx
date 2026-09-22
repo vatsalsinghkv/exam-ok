@@ -11,8 +11,6 @@ export function TestCreatorView() {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col">
-      <PageHeader name="Create New Test" />
-
       {parsedTest ? (
         <Review
           data={parsedTest}
@@ -43,13 +41,16 @@ export function TestCreatorView() {
           }}
         />
       ) : (
-        <div className="flex min-h-0 flex-1 flex-col p-5">
-          <Upload
-            onParsed={(data) => {
-              setParsedTest(data);
-            }}
-          />
-        </div>
+        <>
+          <PageHeader name="Create New Test" />
+          <div className="flex min-h-0 flex-1 flex-col p-5">
+            <Upload
+              onParsed={(data) => {
+                setParsedTest(data);
+              }}
+            />
+          </div>
+        </>
       )}
     </div>
   );

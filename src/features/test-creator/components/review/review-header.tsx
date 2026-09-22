@@ -1,14 +1,14 @@
 "use client";
 
-import { AlertCircle, CheckCircle2, Save, Settings2, X } from "lucide-react";
+import { CheckCircle2, Save, Settings2, X } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export type HeaderProps = {
   name: string;
   questionCount: number;
-  unresolvedCount: number;
   isSaving: boolean;
   onDiscard: () => void;
   onSettings: () => void;
@@ -19,7 +19,6 @@ export type HeaderProps = {
 export function ReviewHeader({
   name,
   questionCount,
-  unresolvedCount,
   isSaving,
   onDiscard,
   onSettings,
@@ -27,33 +26,16 @@ export function ReviewHeader({
   onPublish,
 }: HeaderProps) {
   return (
-    <header className="flex shrink-0 items-center justify-between gap-4 border-b px-3 py-2.5">
+    <header className="flex shrink-0 items-center justify-between gap-4 px-3 py-2.5">
       <div className="flex min-w-0 items-center gap-2">
-        {/* <SidebarTrigger /> */}
+        <SidebarTrigger />
 
-        <div className="min-w-0">
+        <div className="min-w-0 flex items-center gap-2">
           <h1 className="truncate font-semibold">{name || "Untitled Test"}</h1>
 
-          <div className="mt-0.5 flex items-center gap-2">
-            <Badge variant="outline" className="h-5 px-1.5 text-[11px]">
-              Draft
-            </Badge>
-
-            <span className="text-xs text-muted-foreground">
-              {questionCount} questions
-            </span>
-
-            {unresolvedCount > 0 && (
-              <>
-                <span className="text-muted-foreground">·</span>
-
-                <span className="flex items-center gap-1 text-xs text-amber-600">
-                  <AlertCircle className="size-3.5" />
-                  {unresolvedCount} need review
-                </span>
-              </>
-            )}
-          </div>
+          <Badge variant="outline" className="h-5 px-1.5 text-[11px]">
+            Draft
+          </Badge>
         </div>
       </div>
 

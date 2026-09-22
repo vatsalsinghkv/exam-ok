@@ -13,7 +13,7 @@ type Props = {
   activeQuestion: number;
   answerKeyStatus: string;
   resolvedQuestions: Set<number>;
-
+  unresolvedCount: number;
   onSelect: (sourceNumber: number) => void;
 };
 
@@ -29,19 +29,30 @@ export function QuestionSidebar({
   activeQuestion,
   answerKeyStatus,
   resolvedQuestions,
+  unresolvedCount,
   onSelect,
 }: Props) {
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <div className="flex shrink-0 items-center justify-between border-b px-4 py-3">
-        <div>
-          <p className="font-semibold">Questions</p>
-          <p className="text-xs text-muted-foreground">
-            {questions.length} questions
-          </p>
-        </div>
+      <div className="shrink-0  border-b px-4 py-3">
+        <p className="font-semibold">Questions</p>
 
-        <Badge variant="secondary">{questions.length}</Badge>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-muted-foreground">
+            {questions.length} questions
+          </span>
+
+          {unresolvedCount > 0 && (
+            <>
+              <span className="text-muted-foreground">·</span>
+
+              <span className="flex items-center gap-1 text-xs text-amber-600">
+                <AlertCircle className="size-3.5" />
+                {unresolvedCount} need review
+              </span>
+            </>
+          )}
+        </div>
       </div>
 
       <ScrollArea className="min-h-0 flex-1">
