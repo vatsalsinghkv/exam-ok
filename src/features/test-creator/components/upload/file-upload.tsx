@@ -5,7 +5,7 @@ import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import { MAX_FILE_SIZE } from "../lib/constants";
+import { MAX_FILE_SIZE } from "../../lib/constants";
 
 type FileUploadProps = {
   value?: File | null;

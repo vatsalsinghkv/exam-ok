@@ -1,5 +1,13 @@
 import type { OptionPosition } from "./parser";
 
+export type TestSettings = {
+  name: string;
+  description: string;
+  duration: number | null;
+  marksPerQuestion: number;
+  negativeMark: number;
+};
+
 export type ReviewTestPayload = {
   testId?: string;
   name: string;

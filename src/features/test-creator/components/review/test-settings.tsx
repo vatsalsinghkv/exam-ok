@@ -13,21 +13,13 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 
-export type TestSettings = {
-  name: string;
-  description: string;
-  duration: number | null;
-  marksPerQuestion: number;
-  negativeMark: number;
-};
+import type { TestSettings } from "../../lib/types/review";
 
 type Props = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-
   settings: TestSettings;
   questionCount: number;
-
   onChange: (settings: TestSettings) => void;
 };
 

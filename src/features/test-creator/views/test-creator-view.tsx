@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
+
+import { Review, Upload } from "@/features/test-creator/components";
 import type { ParsedTest } from "@/features/test-creator/lib/types";
-import { Review, Upload } from "@/features/test-creator/views/steps";
 import { saveTestAction } from "../actions/save-test";
 
 export function TestCreatorView() {
@@ -10,6 +11,8 @@ export function TestCreatorView() {
 
   return (
     <div className="relative flex h-full min-h-0 flex-col">
+      <PageHeader name="Create New Test" />
+
       {parsedTest ? (
         <Review
           data={parsedTest}
@@ -40,16 +43,13 @@ export function TestCreatorView() {
           }}
         />
       ) : (
-        <>
-          <PageHeader name="Create New Test" />
-          <div className="flex min-h-0 flex-1 flex-col p-5">
-            <Upload
-              onParsed={(data) => {
-                setParsedTest(data);
-              }}
-            />
-          </div>
-        </>
+        <div className="flex min-h-0 flex-1 flex-col p-5">
+          <Upload
+            onParsed={(data) => {
+              setParsedTest(data);
+            }}
+          />
+        </div>
       )}
     </div>
   );
