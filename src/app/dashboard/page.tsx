@@ -1,7 +1,5 @@
-"use client";
-
-import { PageHeader } from "@/components/shared/page-header";
+import { DashboardView } from "@/features/dashboard/views/dashboard-view";
 
 export default function DashboardPage() {
-  return <div className="relative"></div>;
+  return <DashboardView />;
 }
