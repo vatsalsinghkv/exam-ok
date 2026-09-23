@@ -38,7 +38,6 @@ export function Upload({ onParsed }: UploadProps) {
       }
 
       const result = await parsePdfAction(formData);
-      logger({ result });
 
       if (!result.success) {
         alert(result.error || "Failed to process the PDF.");

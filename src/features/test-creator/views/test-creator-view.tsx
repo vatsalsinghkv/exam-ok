@@ -33,10 +33,6 @@ export function TestCreatorView() {
               status: "PUBLISHED",
             });
 
-            if (!result.success) {
-              toast.error(result.error);
-            }
-
             return result;
           }}
         />
