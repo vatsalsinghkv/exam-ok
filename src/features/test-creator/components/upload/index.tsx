@@ -1,10 +1,10 @@
 import { useState, useTransition } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { logger } from "@/lib/utils";
 
 import { parsePdfAction } from "../../actions/parse-pdf";
 import type { ParsedTest } from "../../lib/types";
@@ -30,26 +30,31 @@ export function Upload({ onParsed }: UploadProps) {
     if (!questionFile) return;
 
     startTransition(async () => {
-      const formData = new FormData();
-      formData.append("questionFile", questionFile);
+      try {
+        const formData = new FormData();
+        formData.append("questionFile", questionFile);
 
-      if (hasAnswerKey && answerKeyFile) {
-        formData.append("answerKeyFile", answerKeyFile);
+        if (hasAnswerKey && answerKeyFile) {
+          formData.append("answerKeyFile", answerKeyFile);
+        }
+
+        const result = await parsePdfAction(formData);
+
+        if (!result.success) {
+          alert(result.error || "Failed to process the PDF.");
+          return;
+        }
+
+        if (!result.data) {
+          alert("No parsed data was returned.");
+          return;
+        }
+
+        onParsed(result.data);
+      } catch (error) {
+        console.log(error);
+        toast.error("Couldn't parse this PDF!");
       }
-
-      const result = await parsePdfAction(formData);
-
-      if (!result.success) {
-        alert(result.error || "Failed to process the PDF.");
-        return;
-      }
-
-      if (!result.data) {
-        alert("No parsed data was returned.");
-        return;
-      }
-
-      onParsed(result.data);
     });
   };
   return (
