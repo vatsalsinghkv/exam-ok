@@ -12,7 +12,7 @@ type QuestionState = {
 };
 
 const QUESTION_START = /^\s*(\d{1,3})\.(?:\s+|$)(.*)$/;
-const OPTION_MARKER = /\((1|2|3|4)\)\s*/g;
+const OPTION_MARKER = /\(([1-4]|[A-Da-d])\)\s*/g;
 
 const VISUAL_PATTERNS = [
   /\bfigure\b/i,
