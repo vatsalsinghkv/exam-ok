@@ -13,7 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-import type { ParsedQuestion } from "../../lib/types/parser";
+import type { ParsedQuestion } from "@/features/test-creator/lib/types/parser";
 
 type Props = {
   deleteQuestion: ParsedQuestion | null;

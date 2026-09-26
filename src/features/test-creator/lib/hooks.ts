@@ -4,15 +4,15 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
-import { ROUTES } from "@/lib/constants/routes";
+import type { ParsedTest } from "@/features/test-creator/lib/types";
+import type { ParsedQuestion } from "@/features/test-creator/lib/types/parser";
 import type {
   ReviewTestPayload,
   SaveTestResult,
   TestSettings,
-} from "../lib/types/review";
+} from "@/features/test-creator/lib/types/review";
 
-import type { ParsedTest } from "./types";
-import type { ParsedQuestion } from "./types/parser";
+import { ROUTES } from "@/lib/constants/routes";
 
 type UseReviewStateProps = {
   data: ParsedTest;

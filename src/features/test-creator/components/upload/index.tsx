@@ -6,8 +6,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-import { parsePdfAction } from "../../actions/parse-pdf";
-import type { ParsedTest } from "../../lib/types";
+import { parsePdfAction } from "@/features/test-creator/actions/parse-pdf";
+import type { ParsedTest } from "@/features/test-creator/lib/types";
+
 import { FileUpload } from "./file-upload";
 
 type UploadProps = {
@@ -18,7 +19,6 @@ export function Upload({ onParsed }: UploadProps) {
   const [questionFile, setQuestionFile] = useState<File | null>(null);
   const [answerKeyFile, setAnswerKeyFile] = useState<File | null>(null);
   const [hasAnswerKey, setHasAnswerKey] = useState(false);
-
   const [isPending, startTransition] = useTransition();
 
   const handleAnswerKeyChange = (checked: boolean) => {

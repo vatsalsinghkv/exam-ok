@@ -2,28 +2,28 @@
 
 import { createId } from "@paralleldrive/cuid2";
 import { z } from "zod";
+
+import type {
+  ReviewTestPayload,
+  SaveTestResult,
+} from "@/features/test-creator/lib/types/review";
 import { getUserServer } from "@/lib/services/auth/server";
 import { prisma } from "@/lib/services/prisma";
-import type { ReviewTestPayload, SaveTestResult } from "../lib/types/review";
 
 const saveTestSchema = z.object({
   testId: z.string().optional(),
   status: z.enum(["DRAFT", "PUBLISHED"]),
-
   name: z.string().trim().min(1),
   description: z.string(),
-
   duration: z.number().int().positive().nullable(),
   marksPerQuestion: z.number().nonnegative(),
   negativeMark: z.number().nonnegative(),
-
   questions: z
     .array(
       z.object({
         sourceNumber: z.number().int().positive(),
         text: z.string(),
         image: z.string().optional(),
-
         options: z
           .array(
             z.object({
@@ -38,7 +38,6 @@ const saveTestSchema = z.object({
             }),
           )
           .length(4),
-
         correctOptionPosition: z
           .union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)])
           .nullable(),
@@ -59,7 +58,6 @@ export async function saveTestAction(
 
     const user = await getUserServer();
     if (!user) throw new Error("Unauthorized!");
-
     const userId = user.id;
 
     if (
@@ -83,12 +81,7 @@ export async function saveTestAction(
       async (tx) => {
         let testId = parsed.testId;
 
-        /*
-         * --------------------------------------------------------
-         * 1. Create or update Test
-         * --------------------------------------------------------
-         */
-
+        // * Create or update Test
         if (testId) {
           const existingTest = await tx.test.findFirst({
             where: {
@@ -134,7 +127,6 @@ export async function saveTestAction(
 
           /*
            * For now, replace the draft's questions.
-           *
            * Question/Option/Answer relations cascade from Question.
            */
           await tx.question.deleteMany({
@@ -158,12 +150,7 @@ export async function saveTestAction(
           testId = test.id;
         }
 
-        /*
-         * --------------------------------------------------------
-         * 2. Build Question + Option records in memory
-         * --------------------------------------------------------
-         */
-
+        // * Build Question + Option records in memory
         const questionRows: {
           id: string;
           text: string;
@@ -212,11 +199,7 @@ export async function saveTestAction(
           });
         }
 
-        /*
-         * --------------------------------------------------------
-         * 3. Bulk insert
-         * --------------------------------------------------------
-         */
+        // * Bulk insert
 
         await tx.question.createMany({
           data: questionRows,

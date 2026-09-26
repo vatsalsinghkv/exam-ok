@@ -9,7 +9,8 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 
-import type { ParsedQuestion } from "../../lib/types/parser";
+import type { ParsedQuestion } from "@/features/test-creator/lib/types/parser";
+
 import { QuestionEditor } from "./question-editor";
 import { QuestionSidebar } from "./question-sidebar";
 

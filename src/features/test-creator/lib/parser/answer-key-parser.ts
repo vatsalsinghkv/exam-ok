@@ -2,7 +2,7 @@ import type {
   AnswerKeyEntry,
   OptionPosition,
   ParsedQuestion,
-} from "../types/parser";
+} from "@/features/test-creator/lib/types/parser";
 
 const QUESTION_ID = /^\d{8,20}$/;
 

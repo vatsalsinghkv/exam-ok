@@ -1,4 +1,7 @@
-import type { OptionPosition, ParsedQuestion } from "../types/parser";
+import type {
+  OptionPosition,
+  ParsedQuestion,
+} from "@/features/test-creator/lib/types/parser";
 
 type PageLine = {
   page: number;

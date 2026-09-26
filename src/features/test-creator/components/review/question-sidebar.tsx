@@ -4,9 +4,8 @@ import { AlertCircle, CheckCircle2, FileQuestion } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import type { ParsedQuestion } from "@/features/test-creator/lib/types/parser";
 import { cn } from "@/lib/utils";
-
-import type { ParsedQuestion } from "../../lib/types/parser";
 
 type Props = {
   questions: ParsedQuestion[];
