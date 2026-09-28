@@ -1,15 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useReviewState } from "../../lib/hooks";
-import type { ParsedTest } from "../../lib/types";
-import type { ReviewTestPayload, SaveTestResult } from "../../lib/types/review";
 
-import { ReviewDialogs } from "../review/review-dialogs";
-import { ReviewHeader } from "../review/review-header";
-import { ReviewNotices } from "../review/review-notices";
-import { ReviewWorkspace } from "../review/review-workspace";
-import { TestSettingsSheet } from "../review/test-settings";
+import { useReviewState } from "@/features/test-creator/lib/hooks";
+import type { ParsedTest } from "@/features/test-creator/lib/types";
+import type {
+  ReviewTestPayload,
+  SaveTestResult,
+} from "@/features/test-creator/lib/types/review";
+
+import { ReviewDialogs } from "./review-dialogs";
+import { ReviewHeader } from "./review-header";
+import { ReviewNotices } from "./review-notices";
+import { ReviewWorkspace } from "./review-workspace";
+import { TestSettingsSheet } from "./test-settings";
 
 type Props = {
   data: ParsedTest;

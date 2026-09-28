@@ -1,16 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import type { ParsedTest } from "@/features/test-creator/lib/types";
+import type { ParsedQuestion } from "@/features/test-creator/lib/types/parser";
 import type {
   ReviewTestPayload,
   SaveTestResult,
   TestSettings,
-} from "../lib/types/review";
+} from "@/features/test-creator/lib/types/review";
 
-import type { ParsedTest } from "./types";
-import type { ParsedQuestion } from "./types/parser";
+import { ROUTES } from "@/lib/constants/routes";
 
 type UseReviewStateProps = {
   data: ParsedTest;
@@ -25,6 +27,7 @@ export function useReviewState({
   onPublish,
   onBack,
 }: UseReviewStateProps) {
+  const router = useRouter();
   // * Data
   const [questions, setQuestions] = useState<ParsedQuestion[]>(data.questions);
   const [settings, setSettings] = useState<TestSettings>({
@@ -243,10 +246,11 @@ export function useReviewState({
       setSavedTestId(result.testId);
       setIsDirty(false);
       toast.success("Test published.");
+      router.push(ROUTES.dashboard.home);
     } finally {
       setIsSaving(false);
     }
-  }, [buildPayload, onPublish]);
+  }, [buildPayload, onPublish, router.push]);
 
   const handleBack = useCallback(() => {
     if (isDirty) {

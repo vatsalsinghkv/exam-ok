@@ -2,9 +2,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/shared/page-header";
 
+import { saveTestAction } from "@/features/test-creator/actions/save-test";
 import { Review, Upload } from "@/features/test-creator/components";
 import type { ParsedTest } from "@/features/test-creator/lib/types";
-import { saveTestAction } from "../actions/save-test";
 
 export function TestCreatorView() {
   const [parsedTest, setParsedTest] = useState<ParsedTest | null>(null);
@@ -32,10 +32,6 @@ export function TestCreatorView() {
               ...payload,
               status: "PUBLISHED",
             });
-
-            if (!result.success) {
-              toast.error(result.error);
-            }
 
             return result;
           }}

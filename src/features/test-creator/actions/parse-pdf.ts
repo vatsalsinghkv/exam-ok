@@ -1,14 +1,17 @@
 "use server";
 
 import { extractText } from "unpdf";
-import { MAX_FILE_SIZE } from "../lib/constants";
+
+import { MAX_FILE_SIZE } from "@/features/test-creator/lib/constants";
 import {
   mergeAnswerKey,
   parseAnswerKey,
   parseQuestionPaper,
-} from "../lib/parser";
-
-import type { AnswerKeyResult, ParsePdfResult } from "../lib/types/actions";
+} from "@/features/test-creator/lib/parser";
+import type {
+  AnswerKeyResult,
+  ParsePdfResult,
+} from "@/features/test-creator/lib/types/actions";
 
 async function extractPdfPages(file: File) {
   const buffer = new Uint8Array(await file.arrayBuffer());
@@ -74,9 +77,7 @@ export async function parsePdfAction(
     if (answerKeyFile && answerKeyFile.size > 0) {
       const answerPages = await extractPdfPages(answerKeyFile);
       const answerKeyText = answerPages.join("\n");
-
       const answerKey = parseAnswerKey(answerKeyText);
-
       const mapping = mergeAnswerKey(questions, answerKey);
 
       finalQuestions = mapping.questions;
@@ -90,7 +91,6 @@ export async function parsePdfAction(
 
     return {
       success: true,
-
       data: {
         name: getDefaultTestName(questionFile.name),
         questionCount: finalQuestions.length,
@@ -103,7 +103,6 @@ export async function parsePdfAction(
     };
   } catch (error) {
     console.error("PDF parsing failed:", error);
-
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to process PDF.",

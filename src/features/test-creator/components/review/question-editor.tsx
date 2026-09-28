@@ -16,7 +16,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
 import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
@@ -24,7 +23,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import type { OptionPosition, ParsedQuestion } from "../../lib/types/parser";
+import type {
+  OptionPosition,
+  ParsedQuestion,
+} from "@/features/test-creator/lib/types/parser";
 
 type Props = {
   question: ParsedQuestion;

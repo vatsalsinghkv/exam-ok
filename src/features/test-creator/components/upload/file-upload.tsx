@@ -3,9 +3,8 @@
 import { FileText, Upload, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { MAX_FILE_SIZE } from "@/features/test-creator/lib/constants";
 import { cn } from "@/lib/utils";
-
-import { MAX_FILE_SIZE } from "../../lib/constants";
 
 type FileUploadProps = {
   value?: File | null;

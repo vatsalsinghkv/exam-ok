@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 
-import type { TestSettings } from "../../lib/types/review";
+import type { TestSettings } from "@/features/test-creator/lib/types/review";
 
 type Props = {
   open: boolean;

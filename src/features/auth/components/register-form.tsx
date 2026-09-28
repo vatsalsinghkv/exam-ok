@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "@tanstack/react-form-nextjs";
 import { useState } from "react";
 import { FormError, FormSuccess, UnstyledLink } from "@/components/shared";

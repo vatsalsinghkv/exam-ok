@@ -15,6 +15,20 @@
 ### Level-2 | Dashboard - Layout, Sidebar, Home Page
 
 - [x] Sidebar
-- [ ] Dashboard Home Section
-- [ ] Header
+- [x] Dashboard Home Section
+- [x] Header
 - [ ] Hero
+
+### Level-3 | Functionality
+
+- [x] Upload
+  - [ ] PDF Parser
+    - [x] Static
+    - [ ] AI Based
+  - [ ] Answer Key mapper
+- [x] Review (Test Editor)
+  - [x] Question Editor
+  - [x] Test Settings
+  - [ ] Test
+- [ ] Test Engine
+  - [ ] Test UI | Theme
